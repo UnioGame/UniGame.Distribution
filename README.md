@@ -42,3 +42,40 @@ UniGame.Distribution references:
 Auto publishing command can be used with:
 1. Scriptable Build Pipeline for unity [Build Pipeline](https://github.com/UniGameTeam/UniBuild)
 2. Additional Build Pipeline Commands [Build Commands](https://github.com/UniGameTeam/UniBuild.Commands) (contains Google Play Distribution)
+
+
+# How To Install
+
+## Unity Package Installation
+
+**Odin Inspector Asset recommended to usage with this Package (https://odininspector.com)**
+
+Add to your project manifiest by path [%UnityProject%]/Packages/manifiest.json these lines:
+
+```json
+{
+  "scopedRegistries": [
+    {
+      "name": "Unity",
+      "url": "https://packages.unity.com",
+      "scopes": [
+        "com.unity"
+      ]
+    },
+    {
+      "name": "UniGame",
+      "url": "http://packages.unigame.pro:4873/",
+      "scopes": [
+        "com.unigame"
+      ]
+    }
+  ],
+}
+```
+
+Open window Package Manager in Unity and install UniBuild 
+
+
+![](https://github.com/UniGameTeam/UniGame.Distribution/blob/master/GitAssets/distribution3.png)
+
+
