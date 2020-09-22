@@ -14,7 +14,7 @@ namespace ConsoleGPlayAPITool
 
         public static readonly List<string> BranchVersions = new List<string>()
         {
-            "internal", "alpha", "beta",
+            "internal", "alpha", "beta", "production"
         };
 
         public static readonly List<string> TrackNameStatus = new List<string>()
