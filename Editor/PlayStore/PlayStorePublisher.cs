@@ -63,10 +63,13 @@ namespace ConsoleGPlayAPITool
 
         private async UniTask UploadArtifact(AndroidPublisherService androidPublisherService,IAndroidDistributionSettings configs,AppEdit appEdit)
         {
-            var uploader = configs.IsAppBundle ? 
+            var isAppBundle = configs.IsAppBundle;
+            var uploader = isAppBundle ? 
                 new AndroidAppBundlerUploader() : 
                 new AndroidApkUploader() as IAndroidArtifactUploader;
 
+            Debug.Log($"{nameof(PlayStorePublisher)} : Upload to store With {uploader.GetType().Name}");
+            
             // Upload new apk to developer console
             var upload       = uploader.Upload(configs, androidPublisherService, appEdit);
 

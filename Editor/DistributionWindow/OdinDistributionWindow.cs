@@ -64,7 +64,9 @@ namespace UniModules.UniGame.Distribution.Editor.DistributionWindow
         public void Publish()
         {
             _lifeTime.Release();
-            progress = 0;
+            progress           = 0;
+            
+            PlayStorePublisher = new PlayStorePublisher();
             PlayStorePublisher.Progress.
                 Subscribe(OnProgressChanged).
                 AddTo(_lifeTime);
@@ -84,7 +86,6 @@ namespace UniModules.UniGame.Distribution.Editor.DistributionWindow
         private void InitializeWindow()
         {
             androidDistributionSettings = Settings.androidDistributionSettings;
-            PlayStorePublisher = new PlayStorePublisher();
         }
         
     }
