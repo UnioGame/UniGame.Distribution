@@ -4,7 +4,7 @@
   "displayName": "UniGame Build Distribution",
   "description": "Distribute your build into target store from Unity",
   "unity": "2019.3",
-  "version": "2020.0.17",
+  "version": "2020.0.18",
   "homepage": "https://github.com/UniGameTeam/UniGame.Distribution#README",
   "keywords": [
     "ci",
@@ -17,7 +17,7 @@
     "com.unigame.googleapi": "2020.0.1",
     "com.unigame.neuecc.unirx": "7.1.1",
     "com.unigame.neuecc.unitask": "2.0.32",
-    "com.unigame.unicore": "2020.0.14"
+    "com.unigame.unicore": "2020.0.15"
   },
   "repository": {
     "type": "git",
