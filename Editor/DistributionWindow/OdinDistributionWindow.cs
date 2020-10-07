@@ -6,9 +6,9 @@ namespace UniModules.UniGame.Distribution.Editor.DistributionWindow
     using ConsoleGPlayAPITool;
     using Core.EditorTools.Editor.AssetOperations;
     using Sirenix.OdinInspector;
-    using UniGreenModules.UniCore.EditorTools.Editor;
-    using UniGreenModules.UniCore.Runtime.DataFlow;
-    using UniGreenModules.UniCore.Runtime.Rx.Extensions;
+    using UniModules.UniCore.EditorTools.Editor;
+    using UniModules.UniCore.Runtime.DataFlow;
+    using UniModules.UniCore.Runtime.Rx.Extensions;
     using UniRx;
     using UnityEditor;
     using UnityEngine;

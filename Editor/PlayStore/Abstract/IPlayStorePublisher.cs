@@ -1,7 +1,7 @@
 namespace ConsoleGPlayAPITool
 {
     using Google.Apis.Upload;
-    using UniGreenModules.UniCore.EditorTools.Editor;
+    using UniModules.UniCore.EditorTools.Editor;
     using UniRx;
 
     public interface IPlayStorePublisher
