@@ -16,7 +16,7 @@
   "dependencies": {
     "com.unigame.google.editor.api": "2020.0.1",
     "com.unigame.publisher": "2020.0.2",
-    "com.unigame.coremodules": "2021.0.2"
+	"com.unigame.coremodules": "2021.0.3"
   },
   "repository": {
     "type": "git",
