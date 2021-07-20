@@ -5,8 +5,17 @@ namespace ConsoleGPlayAPITool
     using Google.Apis.AndroidPublisher.v3.Data;
     using UnityEngine;
 
-    public static class AndroidPublisherExtensions{
+    public enum GoogleTrackStatus
+    {
+        Completed,
+        InProgress,
+    }
+    
+    public static class AndroidPublisherExtensions
+    {
 
+        public const string CompletedStatus = "completed";
+        
         public static Track LoadTrackBranch(
             this AndroidPublisherService androidPublisherService, 
             IAndroidDistributionSettings configs,
@@ -40,7 +49,7 @@ namespace ConsoleGPlayAPITool
                 VersionCodes = apkVersionCodes,
             };
             
-            if (configs.TrackStatus != "completed")
+            if (configs.TrackStatus != CompletedStatus)
                 release.UserFraction = configs.UserFraction;
             
             track.Releases.Add(release);

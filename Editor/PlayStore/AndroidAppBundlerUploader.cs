@@ -16,6 +16,7 @@ namespace ConsoleGPlayAPITool
             AppEdit edit)
         {
             Debug.Log("Upload started for apk: " + Path.GetFileName(configs.ArtifactPath));
+            
             var upload = androidPublisherService.Edits.Bundles.Upload(
                 configs.PackageName,
                 edit.Id,

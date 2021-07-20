@@ -74,7 +74,9 @@ namespace ConsoleGPlayAPITool
             // Upload new apk to developer console
             var upload = uploader.Upload(configs, androidPublisherService, appEdit);
 
-            upload.UploadAsync().Start();
+            upload.UploadAsync()
+                .AsUniTask()
+                .Forget();
             
             var uploadProgress = upload.GetProgress();
 
