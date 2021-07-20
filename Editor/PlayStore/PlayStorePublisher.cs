@@ -22,20 +22,20 @@ namespace ConsoleGPlayAPITool
     public class PlayStorePublisher : IPlayStorePublisher
     {
         public const int UploadSecondsTimeout = 600;
-        public const int UpdalodAwaitTimeout  = 200;
+        public const int UploadAwaitTimeout = 200;
 
-        private long                           _uploadSize = 0;
-        private ProgressData                   _progressData;
+        private long _uploadSize = 0;
+        private ProgressData _progressData;
         private ReactiveProperty<ProgressData> _progress = new ReactiveProperty<ProgressData>();
 
         public IReadOnlyReactiveProperty<ProgressData> Progress => _progress;
 
         public async void Publish(IAndroidDistributionSettings configs)
         {
-            _uploadSize     = 0;
-            _progressData   = new ProgressData();
+            _uploadSize = 0;
+            _progressData = new ProgressData();
             _progress.Value = _progressData;
-            
+
             if (configs == null)
             {
                 throw new Exception("Cannot load a valid BundleConfig");
@@ -47,74 +47,70 @@ namespace ConsoleGPlayAPITool
                 Debug.LogError($"{nameof(PlayStorePublisher)} : File not found");
                 return;
             }
-            
+
             var fileSource = new FileInfo(uploadedFile);
-            
-            _uploadSize         = fileSource.Length;
+
+            _uploadSize = fileSource.Length;
             _progressData.Title = uploadedFile;
 
             //Create publisherService
             using (var androidPublisherService = CreateGoogleConsoleAPIService(configs))
             {
-                var appEdit                 = CreateAppEdit(androidPublisherService, configs);
+                var appEdit = CreateAppEdit(androidPublisherService, configs);
                 await UploadArtifact(androidPublisherService, configs, appEdit);
             }
         }
 
-        private async UniTask UploadArtifact(AndroidPublisherService androidPublisherService,IAndroidDistributionSettings configs,AppEdit appEdit)
+        private async UniTask UploadArtifact(AndroidPublisherService androidPublisherService,
+            IAndroidDistributionSettings configs, AppEdit appEdit)
         {
             var isAppBundle = configs.IsAppBundle;
-            var uploader = isAppBundle ? 
-                new AndroidAppBundlerUploader() : 
-                new AndroidApkUploader() as IAndroidArtifactUploader;
+            var uploader = isAppBundle
+                ? new AndroidAppBundlerUploader()
+                : new AndroidApkUploader() as IAndroidArtifactUploader;
 
             Debug.Log($"{nameof(PlayStorePublisher)} : Upload to store With {uploader.GetType().Name}");
-            
+
             // Upload new apk to developer console
-            var upload       = uploader.Upload(configs, androidPublisherService, appEdit);
+            var upload = uploader.Upload(configs, androidPublisherService, appEdit);
 
-            upload.UploadAsync();
-
+            upload.UploadAsync().Start();
+            
             var uploadProgress = upload.GetProgress();
-                
-            while (uploadProgress == null || 
-                   (uploadProgress.Status != UploadStatus.Completed && uploadProgress.Status != UploadStatus.Failed))
+
+            while (uploadProgress == null || (uploadProgress.Status != UploadStatus.Completed && uploadProgress.Status != UploadStatus.Failed))
             {
                 uploadProgress = upload.GetProgress();
                 if (uploadProgress != null)
                 {
                     OnUploadProgressChanged(uploadProgress);
                 }
-                
-                Thread.Sleep(UpdalodAwaitTimeout);
+
+                Thread.Sleep(UploadAwaitTimeout);
             }
 
-            if (uploadProgress.Exception != null)
+            switch (uploadProgress)
             {
-                throw new Exception(uploadProgress.Exception.Message);
+                case {Status: UploadStatus.Completed }:
+                    CommitChangesToGooglePlay(androidPublisherService, configs, appEdit);
+                    break;
+                case {Exception: { }}:
+                    throw new Exception(uploadProgress.Exception.Message);
+                case {} x when x.Status != UploadStatus.Completed :
+                    throw new Exception("File upload failed. Reason: unknown :(");
             }
-
-            if (uploadProgress.Status != UploadStatus.Completed)
-            {
-                throw new Exception("File upload failed. Reason: unknown :(");
-            }
-
-            if (uploadProgress.Status == UploadStatus.Completed)
-            {
-                CommitChangesToGooglePlay(androidPublisherService, configs, appEdit);
-            }
+            
         }
 
         private void OnUploadProgressChanged(IUploadProgress upload)
         {
-            var uploadStatus = _uploadSize == 0 ? 1 : 
-                upload.BytesSent / (double)_uploadSize;
-            _progressData.Progress = (float)uploadStatus;
-            _progressData.Content  = $"STATUS: {upload.Status.ToString()} : {upload.BytesSent} : {_uploadSize} bytes";
-            _progressData.IsDone   = upload.Status == UploadStatus.Completed || upload.Status == UploadStatus.Failed;
+            var uploadStatus = _uploadSize == 0 ? 1 : upload.BytesSent / (double) _uploadSize;
+            _progressData.Progress = (float) uploadStatus;
+            _progressData.Content = $"STATUS: {upload.Status.ToString()} : {upload.BytesSent} : {_uploadSize} bytes";
+            _progressData.IsDone = upload.Status == UploadStatus.Completed || upload.Status == UploadStatus.Failed;
             _progress.SetValueAndForceNotify(_progressData);
         }
-        
+
         private AppEdit CreateAppEdit(
             AndroidPublisherService androidPublisherService,
             IAndroidDistributionSettings configs)
@@ -122,9 +118,9 @@ namespace ConsoleGPlayAPITool
             var edit = androidPublisherService.Edits
                 .Insert(null /** no content */, configs.PackageName)
                 .Execute();
-            Debug.Log("Created edit with id: " +
-                      edit.Id +
-                      " (valid for " + edit.ExpiryTimeSeconds + " seconds)");
+            
+            Debug.Log($"Created edit with id: {edit.Id} (valid for {edit.ExpiryTimeSeconds} seconds)");
+            
             return edit;
         }
 
@@ -134,7 +130,7 @@ namespace ConsoleGPlayAPITool
             AppEdit edit)
         {
             var commitRequest = androidPublisherService.Edits.Commit(configs.PackageName, edit.Id);
-            var appEdit       = commitRequest.Execute();
+            var appEdit = commitRequest.Execute();
             Debug.Log("App edit with id " + appEdit.Id + " has been comitted");
         }
 
@@ -145,8 +141,12 @@ namespace ConsoleGPlayAPITool
 
             // Create the AndroidPublisherService.
             var androidPublisherService = new AndroidPublisherService(new BaseClientService.Initializer
-                {HttpClientInitializer = cred});
+            {
+                HttpClientInitializer = cred
+            });
+            
             androidPublisherService.HttpClient.Timeout = TimeSpan.FromSeconds(UploadSecondsTimeout);
+            
             return androidPublisherService;
         }
     }

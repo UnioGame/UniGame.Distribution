@@ -21,22 +21,28 @@ namespace ConsoleGPlayAPITool
         public static void UpdateTrackInformation(this Track track,int? versionCode, IAndroidDistributionSettings configs)
         {
             var apkVersionCodes = new List<long?> {versionCode};
+
+            var releaseNotes = new List<LocalizedText>();
+            if (!string.IsNullOrEmpty(configs.RecentChangesLang) && !string.IsNullOrEmpty(configs.RecentChangesLang))
+            {
+                releaseNotes.Add(new LocalizedText()
+                {
+                    Language = configs.RecentChangesLang,
+                    Text     = configs.RecentChanges,
+                });
+            }
+                
             var release = new TrackRelease
             {
                 Name = configs.ReleaseName,
-                ReleaseNotes = new List<LocalizedText>()
-                {
-                    new LocalizedText()
-                    {
-                        Language = configs.RecentChangesLang,
-                        Text     = configs.RecentChanges,
-                    }
-                },
+                ReleaseNotes = releaseNotes,
                 Status       = configs.TrackStatus,
                 VersionCodes = apkVersionCodes,
             };
+            
             if (configs.TrackStatus != "completed")
                 release.UserFraction = configs.UserFraction;
+            
             track.Releases.Add(release);
 
             Debug.Log("Update Track information (Without Commit).");

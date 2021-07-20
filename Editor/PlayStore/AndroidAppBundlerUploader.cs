@@ -39,6 +39,7 @@ namespace ConsoleGPlayAPITool
 
             var updatedTrack = androidPublisherService.Edits.Tracks
                 .Update(track, configs.PackageName, edit.Id, track.TrackValue).Execute();
+            
             Debug.Log("Track " + updatedTrack.TrackValue + " has been updated.");
         }
         

@@ -4,7 +4,7 @@
   "displayName": "UniGame Build Distribution",
   "description": "Distribute your build into target store from Unity",
   "unity": "2019.3",
-  "version": "2020.2.20",
+  "version": "2020.2.21",
   "homepage": "https://github.com/UniGameTeam/UniGame.Distribution#README",
   "keywords": [
     "ci",
