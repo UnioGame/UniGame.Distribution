@@ -1,14 +1,14 @@
 {
     "name": "unigame.cipublisher.editor",
+    "rootNamespace": "",
     "references": [
         "GUID:5823ce01cb47c5740a959d8cc0b9b3ca",
         "GUID:2796129a6c23eb84a8181f62bf7332f1",
         "GUID:8e4577c9194c10845984cf27eb974fd1",
+        "GUID:4ebedaede1566e6468edf5f6a097b593",
         "GUID:212e3adc65d3501489951c2978215ea7",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
-        "GUID:b649415412a3d4e8a83df256b07478bb",
-        "GUID:b4318b6f3695442c4983c360248781db"
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285"
     ],
     "includePlatforms": [
         "Editor"
