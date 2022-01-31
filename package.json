@@ -4,7 +4,7 @@
   "displayName": "UniGame Build Distribution",
   "description": "Distribute your build into target store from Unity",
   "unity": "2019.3",
-  "version": "2020.3.25",
+  "version": "2020.3.34",
   "homepage": "https://github.com/UniGameTeam/UniGame.Distribution#README",
   "keywords": [
     "ci",
@@ -16,7 +16,7 @@
   "dependencies": {
     "com.unigame.google.editor.api": "2020.0.2",
     "com.unigame.publisher": "2020.0.5",
-    "com.unigame.coremodules": "2022.1.3"
+    "com.unigame.coremodules": "2022.1.15"
   },
   "repository": {
     "type": "git",
