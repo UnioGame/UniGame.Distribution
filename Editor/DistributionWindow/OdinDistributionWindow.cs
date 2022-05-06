@@ -67,7 +67,7 @@ namespace UniModules.UniGame.Distribution.Editor.DistributionWindow
             
             PlayStorePublisher = new PlayStorePublisher();
             PlayStorePublisher.Progress.
-                Subscribe(OnProgressChanged).
+                RxSubscribe(OnProgressChanged).
                 AddTo(_lifeTime);
             
             PlayStorePublisher.Publish(androidDistributionSettings);
