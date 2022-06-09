@@ -7,7 +7,6 @@ namespace UniModules.UniGame.Distribution.Editor.DistributionWindow
     using Sirenix.OdinInspector;
     using UniModules.UniCore.EditorTools.Editor;
     using UniModules.UniCore.Runtime.DataFlow;
-    using UniModules.UniCore.Runtime.Rx.Extensions;
     using UniRx;
     using UnityEditor;
     using UnityEngine;
