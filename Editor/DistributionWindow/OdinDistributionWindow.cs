@@ -50,7 +50,10 @@ namespace UniModules.UniGame.Distribution.Editor.DistributionWindow
         
         #region public properties
 
-        public  DistributionSettings Settings => _distributionSettings = _distributionSettings ?? DistributionSettings.Asset;
+        public  DistributionSettings Settings => _distributionSettings = 
+            _distributionSettings != null
+            ? _distributionSettings 
+            : DistributionSettings.Asset;
         
         public IPlayStorePublisher PlayStorePublisher { get; protected set; }
 
